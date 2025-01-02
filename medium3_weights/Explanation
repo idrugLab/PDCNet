@@ -1,0 +1,2 @@
+This is a weight file for training the ADCNet model, originating from FG-BERT (https://github.com/idrugLab/FG-BERT). 
+Using these weights obtained after fine-tuning on labeled ADC data, the model can be employed for predicting ADCs.
