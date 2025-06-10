@@ -1,8 +1,5 @@
 from cProfile import label
 import tensorflow as tf
-import time
-import numpy as np
-import matplotlib.pyplot as plt
 from layers import Attention, MultiHeadAttention
 from keras.models import Model
 from keras.layers import Masking, Dense, LSTM, Bidirectional, Input, Dropout
@@ -217,9 +214,6 @@ class PredictModel(tf.keras.Model):
         self.t2_processing_network = self.build_layer()
 
     def build_layer(self, maxlen=71):
-        """
-        Build the network architecture for processing t2.
-        """
         inputs = Input(shape=(maxlen, 65), name='t2_Input')
         masking = Masking(mask_value=0.0, input_shape=(maxlen, 65), name='Masking')(inputs)
         hidden = Bidirectional(LSTM(512, use_bias=True, dropout=0.5, return_sequences=True), name='Bidirectional-LSTM')(
