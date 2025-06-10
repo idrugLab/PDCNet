@@ -13,7 +13,7 @@ pip install git+https://github.com/facebookresearch/esm.git  # bleeding edge, cu
 ## Example of PDCNet environment installation
 ```
 conda create -n PDCNet python==3.9
-pip install requirements.txt
+pip install -r requirements.txt
 ```
 # Train and Predict
 ## Example of obtaining embeddings for peptides
