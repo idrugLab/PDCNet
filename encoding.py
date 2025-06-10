@@ -1,7 +1,6 @@
 import numpy as np
 
 def zscale_padding(seq_list, padding):
-
     zscale = {
         'A': [0.24, -2.32, 0.60, -0.14, 1.30],
         'C': [0.84, -1.67, 3.71, 0.18, -2.65],
@@ -34,12 +33,6 @@ def zscale_padding(seq_list, padding):
 
 
 def one_hot_padding(seq_list, padding):
-    """
-    Generate features for aa sequences [one-hot encoding with zero padding].
-    Input: seq_list: list of sequences,
-           padding: padding length, >= max sequence length.
-    Output: one-hot encoding of sequences.
-    """
     feat_list = []
     one_hot = {}
     aa = ['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']
@@ -53,10 +46,6 @@ def one_hot_padding(seq_list, padding):
 
 
 def position_encoding(padding, d=20, b=1000):
-    """
-    Position encoding features introduced in "Attention is All You Need",
-    the base (b) is changed to 1000 for the short length of peptides.
-    """
     pos_encoding = np.zeros((padding, d))
     for pos in range(padding):
         for i in range(d // 2):
@@ -65,7 +54,6 @@ def position_encoding(padding, d=20, b=1000):
     return pos_encoding
 
 
-# BLOSUM62 matrix
 blosum62 = {
     'A': [4, -1, -2, -2, 0, -2, -1, 0, -2, -1, -1, -1, -1, -1, -1, 1, 0, 0, -3, -2],
     'C': [-1, 9, -3, -4, -2, -3, -3, -3, -3, -1, -1, -3, -3, -3, -3, -1, -1, -1, -2, -2],
@@ -91,12 +79,6 @@ blosum62 = {
 }
 
 def blosum62_padding(seq_list, padding):
-    """
-    Generate BLOSUM62 features for aa sequences with zero padding.
-    Input: seq_list: list of sequences,
-           padding: padding length, >= max sequence length.
-    Output: BLOSUM62 encoding of sequences.
-    """
     feat_list = []
     for seq in seq_list:
         feat = [blosum62.get(aa, blosum62['X']) for aa in seq] + [[0] * 20] * (padding - len(seq))
@@ -104,12 +86,6 @@ def blosum62_padding(seq_list, padding):
     return np.array(feat_list)
 
 def combined_encoding(seq_list, padding):
-    """
-    Combine one-hot encoding, position encoding, and BLOSUM62 encoding.
-    Input: seq_list: list of sequences,
-           padding: padding length, >= max sequence length.
-    Output: combined encoding of sequences.
-    """
     one_hot_encoded = one_hot_padding(seq_list, padding)
     pos_encoded = position_encoding(padding)
     blosum_encoded = blosum62_padding(seq_list, padding)
