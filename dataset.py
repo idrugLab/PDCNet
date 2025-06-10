@@ -18,7 +18,7 @@ str2num = {'<pad>':0 ,'H': 1, 'C': 2, 'N': 3, 'O': 4, 'S': 5, 'F': 6, 'Cl': 7, '
          'I': 10,'Na': 11,'B':12,'Se':13,'Si':14,'<unk>':15,'<mask>':16,'<global>':17}
 num2str =  {i:j for j,i in str2num.items()}
 
-class Graph_Classification_Dataset(object):  # Graph classification task data set processing
+class Graph_Classification_Dataset(object):
     def __init__(self,path,smiles_field1='Smiles1',smiles_field2='Smiles2',label_field=label, index_field=label, max_len=500,seed=1,batch_size=16,a=1,addH=True):
         if path.endswith('.txt') or path.endswith('.tsv'):
             self.df = pd.read_csv(path,sep='\t',encoding='latin1')
@@ -38,11 +38,6 @@ class Graph_Classification_Dataset(object):  # Graph classification task data se
         self.batch_size = batch_size
         self.a = a
         self.addH = addH
-
-    # def shuffle_train_labels(self, df):
-    #     shuffled_labels = df[self.label_field].sample(frac=1, random_state=self.seed).values
-    #     df[self.label_field] = shuffled_labels
-    #     return df
     
     def get_data(self):
         '''Randomized Split Dataset'''
@@ -52,7 +47,6 @@ class Graph_Classification_Dataset(object):  # Graph classification task data se
         idx = data.sample(frac=0.8).index
         train_idx.extend(idx)
         train_data = data[data.index.isin(train_idx)]
-        # train_data = self.shuffle_train_labels(train_data)
         data = data[~data.index.isin(train_idx)]
         test_idx = []
         idx = data[~data.index.isin(train_data)].sample(frac=0.5).index
