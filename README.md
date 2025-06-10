@@ -1,13 +1,13 @@
 # ADCNet
 semi-supervised learning for PDC property prediction.
-[image](https://github.com/idrugLab/PDCNet/blob/main/PDCNet.png)
+![image](https://github.com/idrugLab/PDCNet/blob/main/PDCNet.png)
 # Dataset
 The dataset used to build the model is `data.xlsx`, split into a training set, validation set and test set in a ratio of 8:1:1. The `sequence` and `ID` columns in the data are used to generate the ESM-2 embedding `peptide.pkl`.
 # Requried package:
 ## Example of ESM-2 environment installation
 `conda create -n esm-2 python==3.9`
-`pip install fair-esm  # latest release, OR:`
- `pip install git+https://github.com/facebookresearch/esm.git  # bleeding edge, current repo main branch`
+pip install fair-esm  # latest release, OR:
+pip install git+https://github.com/facebookresearch/esm.git  # bleeding edge, current repo main branch`
 ## Example of PDCNet environment installation
 `conda create -n PDCNet python==3.9`
 `pip install requirements.txt`
