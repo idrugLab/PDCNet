@@ -1,18 +1,12 @@
 import tensorflow as tf
 import tensorflow.keras as keras
 import numpy as np
-from dataset import Graph_Classification_Dataset, Inference_Dataset
-import os
+from dataset import Inference_Dataset
 import pandas as pd
-from model import PredictModel, BertModel
+from model import PredictModel
 from sklearn.metrics import roc_auc_score, confusion_matrix, precision_recall_curve, auc
-from hyperopt import fmin, tpe, hp
-from utils import get_task_names
-from tensorflow.python.client import device_lib
-from sklearn.preprocessing import StandardScaler
 import pickle
 import math
-import csv
 from encoding import *
 
 
@@ -94,7 +88,7 @@ dff = d_model * 2
 vocab_size = 18
 dense_dropout = 0.4
 seed = 1
-df = pd.read_excel('data_test_random2.xlsx')
+df = pd.read_excel('data_test.xlsx')
 np.random.seed(seed=seed)
 tf.random.set_seed(seed=seed)
 sml_list1 = df['Payload SMILES'].tolist()
@@ -108,7 +102,7 @@ for i in range(n):
     x1 = [sml_list1[i]]
     x2 = [sml_list2[i]]
     t1 = extract_tensors(i, Peptide_dict)
-    t2 = extract_t2('data_test_random2.xlsx', i)
+    t2 = extract_t2('data_test.xlsx', i)
     t1 = tf.expand_dims(t1, axis=0)
 
     inference_dataset1 = Inference_Dataset(x1, addH=addH).get_data()
@@ -148,5 +142,3 @@ for i in y_hat.numpy():
     res.append(i)
 print(ans)
 print(res)
-
-
