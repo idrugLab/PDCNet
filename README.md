@@ -36,5 +36,5 @@ Prepare the data to be predicted, including the `sequence` and `ID` columns for 
 conda activate PDCNet
 python inference.py
 ```
-## Using ADCNet for predictions
+## Using PDCNet for predictions
 `You can visit the (https://PDCNet.idruglab.cn) website to make predictions.`
