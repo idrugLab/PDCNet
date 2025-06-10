@@ -8,9 +8,6 @@ import pandas as pd
 from model import PredictModel, BertModel
 from sklearn.metrics import roc_auc_score,confusion_matrix,precision_recall_curve,auc
 from hyperopt import fmin, tpe, hp
-from utils import get_task_names
-from tensorflow.python.client import device_lib
-from sklearn.preprocessing import StandardScaler
 import pickle
 import math
 import csv
@@ -98,7 +95,7 @@ def extract_t2(file_path, index, padding=71):
 
     return tf.constant(combined_encoding, dtype=tf.float32)
 
-def main(seed, args):
+def main(seed, best_dict):
 
     task = 'PDC'
     idx = ['index']
@@ -116,10 +113,10 @@ def main(seed, args):
 
 
 
-    num_heads = 8
-    dense_dropout = 0.4
-    learning_rate = 6.380516599330087e-05
-    batch_size = 16
+    num_heads = best_dict['num_heads']
+    dense_dropout = best_dict['dense_dropout']
+    learning_rate = best_dict['learning_rate']
+    batch_size = best_dict['batch_size']
     seed = seed
     np.random.seed(seed=seed)
     tf.random.set_seed(seed=seed)
@@ -254,6 +251,31 @@ def main(seed, args):
 
     return test_auc,tp, tn, fn, fp, se, sp, mcc, acc, auc_roc_score, F1, BA, prauc, PPV, NPV                                                     
 
+# space = {
+#     "dense_dropout": hp.quniform("dense_dropout", 0, 0.5, 0.05),
+#     "learning_rate": hp.loguniform("learning_rate", np.log(3e-5), np.log(15e-5)),
+#     "batch_size": hp.choice("batch_size", [16, 32, 48, 64]),
+#     "num_heads": hp.choice("num_heads", [4, 8]),
+# }
+
+# def hy_main():
+#     test_auc_list = []
+#     x = 0
+#     for seed in [2023, 2024, 2025]:
+#         print(f"Hyperparam search seed: {seed}")
+#         test_auc, _, _, _, _, _, _, _, _, _, _, _, _, _ = main(seed)
+#         test_auc_list.append(test_auc)
+#         x += test_auc
+    
+#     avg_auc = x / 3
+#     print(f"AUC list: {test_auc_list}, Avg AUC: {avg_auc:.4f}")
+#     return -avg_auc  
+
+best_dict = {}
+best_dict["dense_dropout"] = 0.4
+best_dict["learning_rate"] = 6.380516599330087e-05
+best_dict["batch_size"] = 16
+best_dict["num_heads"] = 8
 
 
 if __name__ == '__main__':
@@ -304,5 +326,3 @@ if __name__ == '__main__':
         writer.writerow(column_names)
         writer.writerows(rows)
     print(f'CSV file {filename} was successfully written')
-
-
